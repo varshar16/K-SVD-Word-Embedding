@@ -12,7 +12,6 @@ class ApproxKSVD:
         @param iters: Number of iterations
         @param err_tol: Error tolerance
         """
-        self.components_ = None
         self.iters = iters
         self.err_tol = err_tol
         self.num_topics = num_topics
@@ -47,7 +46,7 @@ class ApproxKSVD:
         """
         Intializes dictionary from given matrix
         @param X:
-        @return ApproxKSVD object
+        @return Dictionary which is the matrix of discourse atoms
         """
         Ntopics = self.num_topics
         # Reduce dimensions of X if it greater than reuired number of topics
@@ -62,18 +61,18 @@ class ApproxKSVD:
     def _transform(self, D, X):
         """
         Sparse Coding using Orthogonal Matching Pursuit method to find best coefficients of dictionary 
-        @param D:
+        @param D: Dictionary of discourse atoms
         @param X:
-        @return weights
+        @return weights of each word on a discourse atoms
         """
         return orthogonal_mp_gram(
             Gram=D.dot(D.T), Xy=D.dot(X.T), n_nonzero_coefs=self.num_words).T
 
     def fit(self, X):
         """
-        Apply approximate  k-svd on data set 
-        @param X
-        @return ApproxKSVD object
+        Apply approximate  k-svd on data set, to get best dictionary and coefficients
+        @param X:
+        @return dictionary and weights
         """
         D = self._initialize(X)
         for i in range(self.iters):
@@ -86,13 +85,4 @@ class ApproxKSVD:
             # Update dictionary and weights
             D, w = self._update_dict(X, D, w)
 
-        self.components_ = D
-        return self
-
-    def transform(self, X):
-        """
-        Fetch best coefficients for given matrix 
-        @param X
-        @return ApproxKSVD object
-        """
-        return self._transform(self.components_, X)
+        return D, w
