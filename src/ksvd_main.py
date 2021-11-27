@@ -1,19 +1,19 @@
 import numpy as np
 import scipy as sp
 from sklearn.linear_model import orthogonal_mp_gram
-#from typing import List, Any, Dict, Tuple
+from typing import Any
 
 
 class ApproxKSVD:
-    def __init__(self, num_topics: int, num_words: int, max_iters: int=10, err_tol: float=1e-6) -> None:
+    def __init__(self, num_topics: int, num_words: int, iters: int=10, err_tol: float=1e-6) -> None:
         """
         @param num_topics: Number of topics (i.e., atoms or dictionary elements)
         @param num_words: how many atoms each word can load onto
-        @param max_iters: Maximum number of iterations
+        @param iters: Number of iterations
         @param err_tol: Error tolerance
         """
         self.components_ = None
-        self.max_iters = max_iters
+        self.iters = iters
         self.err_tol = err_tol
         self.num_topics = num_topics
         self.num_words = num_words
@@ -27,12 +27,14 @@ class ApproxKSVD:
         @return Dictionary, Weight
         """
         for j in range(self.num_topics):
+            # Fetch indices of signals in X where non-zero values of d_j are represented.
             I = weights[:, j] > 0
             if np.sum(I) == 0:
                 continue
-
+            # Set jth row and all the columns to zeroes
             D[j, :] = 0
             w = weights[I, j].T
+            # residual
             r = X[I, :] - weights[I, :].dot(D)
             d = r.T.dot(w)
             d /= np.linalg.norm(d)
@@ -43,11 +45,12 @@ class ApproxKSVD:
 
     def _initialize(self, X):
         """
-        Apply svd on data set
+        Intializes dictionary from given matrix
         @param X:
         @return ApproxKSVD object
         """
         Ntopics = self.num_topics
+        # Reduce dimensions of X if it greater than reuired number of topics
         if min(X.shape) < Ntopics:
             D = np.random.randn(Ntopics, X.shape[1])
         else:
@@ -58,7 +61,7 @@ class ApproxKSVD:
 
     def _transform(self, D, X):
         """
-        Sparse Coding task - find best coefficients of dictionary 
+        Sparse Coding using Orthogonal Matching Pursuit method to find best coefficients of dictionary 
         @param D:
         @param X:
         @return weights
@@ -68,16 +71,19 @@ class ApproxKSVD:
 
     def fit(self, X) -> ApproxKSVD:
         """
-        Apply svd on data set 
+        Apply approximate  k-svd on data set 
         @param X
         @return ApproxKSVD object
         """
         D = self._initialize(X)
-        for i in range(self.max_iters):
+        for i in range(self.iters):
+            # Sparse Coding
             w = self._transform(D, X)
+            # check if the distances are less than target sparsity
             e = np.linalg.norm(X - w.dot(D))
             if e < self.err_tol:
                 break
+            # Update dictionary and weights
             D, w = self._update_dict(X, D, w)
 
         self.components_ = D
@@ -85,7 +91,7 @@ class ApproxKSVD:
 
     def transform(self, X):
         """
-        Apply svd on data set 
+        Fetch best coefficients for given matrix 
         @param X
         @return ApproxKSVD object
         """
