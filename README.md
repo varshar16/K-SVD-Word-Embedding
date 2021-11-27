@@ -1,7 +1,7 @@
 K-SVD implementation for word embedding
 ---------------------------------------
 
-K-SVD: An Algorithm for Designing Overcomplete Dictionaries for Sparse Representation
+#### K-SVD: An Algorithm for Designing Overcomplete Dictionaries for Sparse Representation
 https://sites.fas.harvard.edu/~cs278/papers/ksvd.pdf
 
 
@@ -32,3 +32,12 @@ Pseudo Code:
     * SVD(E_k_R) = USVT
     * First column of U is solution for d_k
     * First column of V multiplied by S(1,1) is x_R_k
+
+
+#### Efficient Implementation of the K-SVD Algorithm using Batch Orthogonal Matching Pursuit
+
+https://www.cs.technion.ac.il/~ronrubin/Publications/KSVD-OMP-v2.pdf
+
+Batch OMP is designed for sparse coding large sets of signals
+1. Uses Batch OMP for sparse coding method
+2. Update dictionary and weights in an optimized way
