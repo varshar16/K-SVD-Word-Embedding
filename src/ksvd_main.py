@@ -69,7 +69,7 @@ class ApproxKSVD:
         return orthogonal_mp_gram(
             Gram=D.dot(D.T), Xy=D.dot(X.T), n_nonzero_coefs=self.num_words).T
 
-    def fit(self, X) -> ApproxKSVD:
+    def fit(self, X):
         """
         Apply approximate  k-svd on data set 
         @param X
