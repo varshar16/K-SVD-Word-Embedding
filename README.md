@@ -41,3 +41,6 @@ https://www.cs.technion.ac.il/~ronrubin/Publications/KSVD-OMP-v2.pdf
 Batch OMP is designed for sparse coding large sets of signals
 1. Uses Batch OMP for sparse coding method
 2. Update dictionary and weights in an optimized way
+
+
+Version of https://github.com/nel215/ksvd
