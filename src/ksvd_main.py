@@ -88,5 +88,4 @@ class ApproxKSVD:
                 break
             # Update dictionary and weights
             D, w = self._update_dict(X, D, w)
-
         return D, w
