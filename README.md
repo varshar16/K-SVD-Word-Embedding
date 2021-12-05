@@ -26,3 +26,13 @@ We want to represent each word vector as a sparse linear combination of atom vec
 &nbsp;&nbsp;&nbsp;&nbsp;![lagrida_latex_editor-6](https://user-images.githubusercontent.com/22663880/144764037-5a079f4f-3508-448c-bd46-e3a53b344986.png)<br>
 ![lagrida_latex_editor-6](https://user-images.githubusercontent.com/22663880/144764037-5a079f4f-3508-448c-bd46-e3a53b344986.png)<br>
 
+
+## Example Usage
+
+```
+V = 100
+N = 10
+Y = np.random.rand(V,N)
+ksvd = ApproxKSVD(V, N)
+D, X = ksvd.fit(Y)
+```
