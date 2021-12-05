@@ -30,9 +30,12 @@ We want to represent each word vector as a sparse linear combination of atom vec
 ## Example Usage
 
 ```
+# Default values for k=10, tol=1e-6
 V = 100
 N = 10
 Y = np.random.rand(V,N)
 ksvd = ApproxKSVD(V, N)
 D, X = ksvd.fit(Y)
 ```
+
+Note: This implementation is a version of https://github.com/nel215/ksvd
