@@ -5,7 +5,8 @@ from typing import Any
 
 
 class ApproxKSVD:
-    def __init__(self, num_topics: int, num_words: int, iters: int=10, err_tol: float=1e-6) -> None:
+    def __init__(self, num_topics: int, num_words: int, iters: int=10,
+                 err_tol:float=1e-6) -> None:
         """
         @param num_topics: Number of topics (i.e., atoms or dictionary elements)
         @param num_words: how many atoms each word can load onto
@@ -60,7 +61,8 @@ class ApproxKSVD:
 
     def _transform(self, D, X):
         """
-        Sparse Coding using Orthogonal Matching Pursuit method to find best coefficients of dictionary 
+        Sparse Coding using Orthogonal Matching Pursuit method to find best
+        coefficients of dictionary
         @param D: Dictionary of discourse atoms
         @param X: Word Vectors
         @return weights of each word onto discourse atoms
@@ -70,7 +72,8 @@ class ApproxKSVD:
 
     def fit(self, X):
         """
-        Apply approximate k-svd on data set, to get best dictionary and coefficients
+        Apply approximate k-svd on data set, to get best dictionary and
+        coefficients
         @param X: Word Vectors
         @return dictionary and weights
         """
