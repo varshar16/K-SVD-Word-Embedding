@@ -34,6 +34,8 @@ class ApproxKSVD:
                 continue
             # Set jth row and all the columns to zeroes
             D[j, :] = 0
+            # Following steps optimize computation of new D, weights
+            # and is different from K-SVD
             w = weights[I, j].T
             # residual
             r = X[I, :] - weights[I, :].dot(D)
