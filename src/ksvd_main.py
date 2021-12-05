@@ -20,9 +20,9 @@ class ApproxKSVD:
     def _update_dict(self, X, D, weights):
         """
         Updates dictionary and weights
-        @param X
-        @param D
-        @param weights
+        @param X: Word Vectors
+        @param D: Dictionary of discourse atoms
+        @param weights: contain the loadings of each word onto the discourse atoms
         @return Dictionary, Weight
         """
         for j in range(self.num_topics):
@@ -45,11 +45,11 @@ class ApproxKSVD:
     def _initialize(self, X):
         """
         Intializes dictionary from given matrix
-        @param X:
-        @return Dictionary which is the matrix of discourse atoms
+        @param X: Word Vectors
+        @return Dictionary of discourse atoms
         """
         Ntopics = self.num_topics
-        # Reduce dimensions of X if it greater than reuired number of topics
+        # Reduce dimensions of X if it is greater than required number of topics
         if min(X.shape) < Ntopics:
             D = np.random.randn(Ntopics, X.shape[1])
         else:
@@ -62,16 +62,16 @@ class ApproxKSVD:
         """
         Sparse Coding using Orthogonal Matching Pursuit method to find best coefficients of dictionary 
         @param D: Dictionary of discourse atoms
-        @param X:
-        @return weights of each word on a discourse atoms
+        @param X: Word Vectors
+        @return weights of each word onto discourse atoms
         """
         return orthogonal_mp_gram(
             Gram=D.dot(D.T), Xy=D.dot(X.T), n_nonzero_coefs=self.num_words).T
 
     def fit(self, X):
         """
-        Apply approximate  k-svd on data set, to get best dictionary and coefficients
-        @param X:
+        Apply approximate k-svd on data set, to get best dictionary and coefficients
+        @param X: Word Vectors
         @return dictionary and weights
         """
         D = self._initialize(X)
